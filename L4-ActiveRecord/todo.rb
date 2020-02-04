@@ -16,12 +16,12 @@ class Todo < ActiveRecord::Base
     new_task[:due_date] = Date.today + new_task[:due_in_days]
 
     new_todo = new_task.except (:due_in_days)
-    new_task[:due_in_days]
+    new_todo[:completed] = false
     create!(new_todo)
   end
 
   def self.mark_as_complete!(id)
-    todo = all[id - 1]
+    todo = find(id)
     todo.completed = true
     todo.save
     todo
