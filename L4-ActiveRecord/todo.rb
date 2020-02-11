@@ -4,13 +4,13 @@ class Todo < ActiveRecord::Base
   def self.show_list
     puts "My Todo-list\n\n"
     puts "Overdue"
-    puts where("due_date < ?", Date.today).map { |todo| todo.to_displayable_string }
+    puts list_Overdue.map { |todo| todo.to_displayable_string }
     puts "\n"
     puts "Due Today"
-    puts where("due_date = ?", Date.today).map { |todo| todo.to_displayable_string }
+    puts list_due_today.map { |todo| todo.to_displayable_string }
     puts "\n"
     puts "Due Later"
-    puts where("due_date > ?", Date.today).map { |todo| todo.to_displayable_string }
+    puts list_duelater.map { |todo| todo.to_displayable_string }
   end
   def self.add_task(new_task)
     new_task[:due_date] = Date.today + new_task[:due_in_days]
@@ -18,6 +18,15 @@ class Todo < ActiveRecord::Base
     new_todo = new_task.except (:due_in_days)
     new_todo[:completed] = false
     create!(new_todo)
+  end
+  def self.list_due_today
+    where("due_date < ?", Date.today)
+  end
+  def self.list_Overdue
+    where("due_date = ?", Date.today)
+  end
+  def self.list_duelater
+    where("due_date > ?", Date.today)
   end
 
   def self.mark_as_complete!(id)
