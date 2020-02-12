@@ -20,10 +20,10 @@ class Todo < ActiveRecord::Base
     create!(new_todo)
   end
   def self.list_due_today
-    where("due_date < ?", Date.today)
+    where("due_date = ?", Date.today)
   end
   def self.list_Overdue
-    where("due_date = ?", Date.today)
+    where("due_date < ?", Date.today)
   end
   def self.list_duelater
     where("due_date > ?", Date.today)
